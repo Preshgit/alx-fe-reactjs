@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useRecipeStore from "../store/recipeStore";
+import useRecipeStore from "./recipeStore";
 
 const AddRecipeForm = () => {
   // Access the addRecipe action from the Zustand store
