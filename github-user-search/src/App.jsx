@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import SearchForm from "./components/SearchForm";
+import UserList from "./components/UserList";
+import { searchUsers } from "./services/githubApi";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSearch = async (query) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await searchUsers(query);
+      setUsers(data.items);
+    } catch (err) {
+      setError("Failed to fetch users. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <header className="app-header">
+        <h1>GitHub User Search</h1>
+      </header>
+
+      <main className="app-main">
+        <SearchForm onSearch={handleSearch} />
+
+        {error && <div className="error-message">{error}</div>}
+
+        <UserList users={users} loading={loading} />
+      </main>
+
+      <footer className="app-footer">
+        <p>Built with React and GitHub API</p>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;
