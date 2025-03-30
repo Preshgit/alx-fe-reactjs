@@ -1,8 +1,6 @@
 import axios from "axios";
-
 // Base URL for GitHub API
 const BASE_URL = "https://api.github.com";
-
 // Create an axios instance with base configuration
 const githubApi = axios.create({
   baseURL: BASE_URL,
@@ -10,7 +8,6 @@ const githubApi = axios.create({
     "Content-Type": "application/json",
   },
 });
-
 // Add authentication if you have a GitHub API key
 // This is optional for basic usage but helps with rate limiting
 if (import.meta.env.VITE_APP_GITHUB_API_KEY) {
@@ -18,7 +15,6 @@ if (import.meta.env.VITE_APP_GITHUB_API_KEY) {
     import.meta.env.VITE_APP_GITHUB_API_KEY
   }`;
 }
-
 // Function to fetch user data by username
 export const fetchUserData = async (username) => {
   try {
@@ -29,8 +25,8 @@ export const fetchUserData = async (username) => {
     throw error;
   }
 };
-
 // Function for advanced user search with multiple criteria
+// Full URL: https://api.github.com/search/users?q
 export const advancedUserSearch = async (params) => {
   try {
     // Build query string based on provided parameters
@@ -59,8 +55,8 @@ export const advancedUserSearch = async (params) => {
     // Build the final query string
     const queryString = queryParts.join("+");
 
-    // Make the API request
-    const response = await githubApi.get("/search/users", {
+    // Make the API request using direct URL instead of base URL + path
+    const response = await axios.get("https://api.github.com/search/users", {
       params: {
         q: queryString,
         per_page: params.perPage || 10,
@@ -76,7 +72,6 @@ export const advancedUserSearch = async (params) => {
     throw error;
   }
 };
-
 // Function to get additional user details for search results
 export const getUserDetails = async (username) => {
   try {
@@ -87,7 +82,6 @@ export const getUserDetails = async (username) => {
     throw error;
   }
 };
-
 // Function to get user repositories
 export const getUserRepositories = async (username, page = 1, perPage = 5) => {
   try {
