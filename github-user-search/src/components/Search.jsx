@@ -97,6 +97,7 @@ function Search() {
   };
 
   // Fetch detailed information for each user
+  html_url;
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
