@@ -1,20 +1,23 @@
-import "./App.css";
 import Search from "./components/Search";
 
 function App() {
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>GitHub User Search</h1>
-        <p>Enter a username to find a GitHub profile</p>
+    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6">
+      <header className="max-w-4xl mx-auto mb-8 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          GitHub User Explorer
+        </h1>
+        <p className="text-gray-600">
+          Find and explore GitHub users with advanced search capabilities
+        </p>
       </header>
 
-      <main className="app-main">
+      <main>
         <Search />
       </main>
 
-      <footer className="app-footer">
-        <p>Built with React and GitHub API</p>
+      <footer className="max-w-4xl mx-auto mt-12 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+        <p>Built with React and GitHub API • {new Date().getFullYear()}</p>
       </footer>
     </div>
   );

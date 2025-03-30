@@ -30,13 +30,78 @@ export const fetchUserData = async (username) => {
   }
 };
 
-// Function to search for multiple users (keeping for potential future expansion)
-export const searchUsers = async (query) => {
+// Function for advanced user search with multiple criteria
+export const advancedUserSearch = async (params) => {
   try {
-    const response = await githubApi.get(`/search/users?q=${query}`);
+    // Build query string based on provided parameters
+    let queryParts = [];
+
+    // Add username/keyword
+    if (params.keyword) {
+      queryParts.push(params.keyword);
+    }
+
+    // Add location if provided
+    if (params.location) {
+      queryParts.push(`location:${params.location}`);
+    }
+
+    // Add minimum repositories if provided
+    if (params.minRepos) {
+      queryParts.push(`repos:>=${params.minRepos}`);
+    }
+
+    // Add followers if provided
+    if (params.minFollowers) {
+      queryParts.push(`followers:>=${params.minFollowers}`);
+    }
+
+    // Build the final query string
+    const queryString = queryParts.join("+");
+
+    // Make the API request
+    const response = await githubApi.get("/search/users", {
+      params: {
+        q: queryString,
+        per_page: params.perPage || 10,
+        page: params.page || 1,
+        sort: params.sort || "followers",
+        order: params.order || "desc",
+      },
+    });
+
     return response.data;
   } catch (error) {
     console.error("Error searching users:", error);
+    throw error;
+  }
+};
+
+// Function to get additional user details for search results
+export const getUserDetails = async (username) => {
+  try {
+    const response = await githubApi.get(`/users/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching details for ${username}:`, error);
+    throw error;
+  }
+};
+
+// Function to get user repositories
+export const getUserRepositories = async (username, page = 1, perPage = 5) => {
+  try {
+    const response = await githubApi.get(`/users/${username}/repos`, {
+      params: {
+        page,
+        per_page: perPage,
+        sort: "updated",
+        direction: "desc",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching repositories for ${username}:`, error);
     throw error;
   }
 };
