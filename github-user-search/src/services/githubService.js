@@ -19,24 +19,24 @@ if (import.meta.env.VITE_APP_GITHUB_API_KEY) {
   }`;
 }
 
-// Function to search for users
+// Function to fetch user data by username
+export const fetchUserData = async (username) => {
+  try {
+    const response = await githubApi.get(`/users/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};
+
+// Function to search for multiple users (keeping for potential future expansion)
 export const searchUsers = async (query) => {
   try {
     const response = await githubApi.get(`/search/users?q=${query}`);
     return response.data;
   } catch (error) {
     console.error("Error searching users:", error);
-    throw error;
-  }
-};
-
-// Function to get detailed user information
-export const getUserDetails = async (username) => {
-  try {
-    const response = await githubApi.get(`/users/${username}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user details:", error);
     throw error;
   }
 };
