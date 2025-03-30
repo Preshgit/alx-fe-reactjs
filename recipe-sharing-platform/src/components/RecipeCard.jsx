@@ -2,7 +2,7 @@ import React from "react";
 
 const RecipeCard = ({ recipe }) => {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full transform hover:scale-105 transition-transform duration-300">
+    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl flex flex-col h-full transform hover:scale-105 transition-transform duration-300">
       <img
         src={recipe.image}
         alt={recipe.title}
