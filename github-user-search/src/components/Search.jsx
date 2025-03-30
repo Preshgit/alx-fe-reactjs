@@ -126,6 +126,8 @@ function Search() {
     }
   }, [users]);
 
+  fetchUserData;
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Advanced Search Form */}
