@@ -23,10 +23,9 @@ function Search() {
 
   // Handle input changes
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
     setSearchParams((prev) => ({
       ...prev,
-      [name]: value,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -114,7 +113,20 @@ function Search() {
         );
         const userDetailsResults = await Promise.all(detailPromises);
 
-        setDetailedUsers((prev) => [...prev, ...userDetailsResults]);
+        // Ensure each user has avatar_url property
+        const processedUsers = userDetailsResults.map((user) => {
+          // If user doesn't have avatar_url, set a placeholder image
+          if (!user.avatar_url) {
+            return {
+              ...user,
+              avatar_url:
+                "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+            };
+          }
+          return user;
+        });
+
+        setDetailedUsers((prev) => [...prev, ...processedUsers]);
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
