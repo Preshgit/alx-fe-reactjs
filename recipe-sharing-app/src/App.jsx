@@ -4,9 +4,9 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import RecipeList from "./components/RecipeList";
+import RecipeList from "./RecipeList";
 import RecipeDetails from "./RecipeDetails";
-import AddRecipeForm from "./components/AddRecipeForm";
+import AddRecipeForm from "./AddRecipeForm"; // Assuming you have this component
 import "./App.css";
 
 function App() {
