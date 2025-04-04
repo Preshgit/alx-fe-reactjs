@@ -113,17 +113,20 @@ function Search() {
         );
         const userDetailsResults = await Promise.all(detailPromises);
 
-        // Ensure each user has avatar_url property
+        // Ensure each user has avatar_url property and img property
         const processedUsers = userDetailsResults.map((user) => {
-          // If user doesn't have avatar_url, set a placeholder image
-          if (!user.avatar_url) {
-            return {
-              ...user,
-              avatar_url:
-                "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-            };
-          }
-          return user;
+          // Set default avatar if missing
+          const defaultAvatar =
+            "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+
+          return {
+            ...user,
+            avatar_url: user.avatar_url || defaultAvatar,
+            img: {
+              src: user.avatar_url || defaultAvatar,
+              alt: `${user.login}'s avatar`,
+            },
+          };
         });
 
         setDetailedUsers((prev) => [...prev, ...processedUsers]);
